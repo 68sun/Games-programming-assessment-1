@@ -19,9 +19,14 @@ commands = {"help" : "Gives a list of general commands the player can use", "inv
 main = True
 
 
-##Intro booleans
-#These are the booleans used in the intro loop
+##Main booleans
+#These are the booleans used in the main loop
 initialLine = True
+
+
+##Discovery booleans
+#These are the booleans used in the discovery mechanic
+inspectDiscovered = False
 
 
 
@@ -68,6 +73,36 @@ def status():
     print("<<<   HEALTH: %d/%d   >>>" % (health, maxHealth))
     print("<<<   ENERGY: %d/%d   >>>" % (energy, maxEnergy))
     print("\n")
+
+
+##Discover
+#Discover 'applications' (commands) that the player can use
+def discover():
+    global action
+
+
+    print (">>> DISCOVERY APPLICATION ACTIVATED.")
+    print (">>> TYPE SEARCH TERMS TO ATTEMPT TO DISCOVER NEW APPLICATIONS FOR INSTALL.")
+    print (">>> HINTS FOR DISCOVERING APPLICATIONS WILL APPEAR BELOW WHEN FOUND: ")
+
+    #Hint for discovering the inspect command
+    if inspectDiscovered == False:
+        Print (">> HINT: To look closely at the elements of this world")
+
+            
+    while action == "discover":
+
+
+        #Players guess to attempt to discover a new command
+        guess = input(">>> WHAT SEARCH TERM WOULD YOU LIKE TO TRY? TYPE CANCEL TO EXIT THE DISCOVERY APPLICATION").lower()
+
+        if guess == "cancel":
+            action = "idle"
+
+        elif guess == "inspect":
+            inspectDiscovered == True
+
+        
 
 
 ##Inspect
@@ -157,7 +192,7 @@ while main:
         action = input("What will you do?").lower()
 
 
-    elif action == "inspect":
+    elif action == "inspect" and inspectDiscovered == True:
         inspect()
         
 
