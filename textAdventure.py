@@ -1,4 +1,4 @@
-####Variables
+ ####Variables
 
 ##Player values
 #These are variables that pertain to the player's "avatar" in the game
@@ -11,7 +11,9 @@ inventory = {"Placeholder" : 1, "Placeholder2" : 0, "Placeholder3" : 0}
 
 ##Commands
 #A list of commands that the player can use
-commands = {"help" : "Gives a list of general commands the player can use", "inventory" : "Shows the players inventory", "status" : "Checks the players health and energy level", "inspect" : "inspect a place or item", "desription" : "gives a description of the room", "take": "take an item"}
+commands = {"help" : "Gives a list of discovered commands the player can use", "desription" : "gives a description of the room", "inventory" : "Shows the players inventory", "status" : "Checks the players health and energy level", "discover" : "Allows the player to discover new commands"}
+
+
 
 
 ##Loop booleans
@@ -26,7 +28,13 @@ initialLine = True
 
 ##Discovery booleans
 #These are the booleans used in the discovery mechanic
+
+#Inspect command
 inspectDiscovered = False
+
+#Take command
+takeDiscovered = False
+takeHint = False
 
 
 
@@ -79,15 +87,22 @@ def status():
 #Discover 'applications' (commands) that the player can use
 def discover():
     global action
+    global name
 
 
     print (">>> DISCOVERY APPLICATION ACTIVATED.")
+    print (">>> DISCOVERY CAN BE USED TO OBTAIN HIGHER FUNCTION APPLICATIONS NOT CURRENTLY INSTALLED IN SUBJECT " + name.upper())
     print (">>> TYPE SEARCH TERMS TO ATTEMPT TO DISCOVER NEW APPLICATIONS FOR INSTALL.")
     print (">>> HINTS FOR DISCOVERING APPLICATIONS WILL APPEAR BELOW WHEN FOUND: ")
 
     #Hint for discovering the inspect command
+    #Inspect command hint
     if inspectDiscovered == False:
-        Print (">> HINT: To look closely at the elements of this world")
+        print (">> HINT: To look closely at the elements of this world")
+
+    #Take command hint
+    if takeDiscovered == False and takeHint == True:
+        print (">> HINT: To obtain that which you desire")
 
             
     while action == "discover":
@@ -96,11 +111,47 @@ def discover():
         #Players guess to attempt to discover a new command
         guess = input(">>> WHAT SEARCH TERM WOULD YOU LIKE TO TRY? TYPE CANCEL TO EXIT THE DISCOVERY APPLICATION").lower()
 
+
+        #Allows the player to exit discover mode
         if guess == "cancel":
             action = "idle"
 
+
+        #For discovering the inspect command
         elif guess == "inspect":
+            
             inspectDiscovered == True
+            
+            #Adds command to "commands" dictionary
+            commands["inspect"] = "inspect a place or item"
+
+            #Tells player a new command was discovered and an explanation of what it does
+            print (">>> NEW APPLICATION DISCOVERED.")
+            print (">>> THE INSPECT APPLICATION CAN BE USED TO INVESTIGATE SPECIFIC AREAS OR OBJECTS.")
+
+
+        #For discovering the take command
+        elif guess == "take":
+
+            takeDiscovered == True
+
+            #Adds command to "commands" dictionary
+            commands["take"] = "take an item"
+
+            #Tells player a new command was discovered and an explanation of what it does
+            print (">>> NEW APPLICATION DISCOVERED.")
+            print (">>> THE TAKE APPLICATION CAN BE USED TO PICK UP AND COLLECT ITEMS.")
+
+
+        #If the search term doesn't match any discoverable command 
+        else:
+            print (">>> THIS IS NOT A VALID SEARCH TERM. NO NEW APPLICATIONS DISCOVERED.")
+            print (">>> PLEASE TRY AGAIN.")
+            
+
+            
+
+        
 
         
 
@@ -152,7 +203,9 @@ def inspect():
 ####Introduction
 ##Introduction text
 print(">>> INITIALISING. " + name.upper() +".exe. 20%. 40%. 60%. 80%. 99%. INITIALISATION COMPLETE.")
-print(">>> UPLOADING MISSION BRIEF. 20%. 40%. 30%^&$*$£^$ ((_ ((£*&&* ERROR. MISSION BRIEF UPLOAD UNSUCCESSFUL. ATEMPTING TO SHUT DOWN SYSTEM.")
+print(">>> UPLOADING HIGHER FUNCTION APPLICATIONS. 20%. 40%. 50%^&*$(&£*( ERROR. UPLOAD UNSUCCESSFUL. SOME HIGHER FUNCTIONS MAY BE UNAVAILABLE TO SUBJECT.")
+print(">>> USE OF DISCOVERY APPLICATION SUGGESTED TO GAIN UNAVAILABLE HIGHER FUNTION APPLICATIONS.")
+print(">>> UPLOADING MISSION BRIEF. 20%. 40%. 30%^&$*$£^$ ((_ ((£*&&* ERROR. UPLOAD UNSUCCESSFUL. ATEMPTING TO SHUT DOWN SYSTEM.")
 print(">>> SYSTEM SHUTDOWN UNSUCCESSFUL. ADVISE MANAGEMENT INTERVENTION.")
 print(">>> \n" * 10)
 print("You awaken...")
@@ -192,8 +245,15 @@ while main:
         action = input("What will you do?").lower()
 
 
+    #This accesses the 'discover' command, which allows the player to discover new commands for them to use
+    elif action == "discover":
+        discover()
+
+
     elif action == "inspect" and inspectDiscovered == True:
         inspect()
+
+    
         
 
 
