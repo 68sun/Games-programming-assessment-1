@@ -1,4 +1,4 @@
- ####Variables
+####Variables
 
 ##Player values
 #These are variables that pertain to the player's "avatar" in the game
@@ -6,13 +6,17 @@ maxHealth = 100
 maxEnergy = 100
 health = 100
 energy = 100
-inventory = {"Placeholder" : 1, "Placeholder2" : 0, "Placeholder3" : 0}
+
 
 
 ##Commands
 #A list of commands that the player can use
 commands = {"help" : "Gives a list of discovered commands the player can use", "desription" : "gives a description of the room", "inventory" : "Shows the players inventory", "status" : "Checks the players health and energy level", "discover" : "Allows the player to discover new commands"}
 
+
+##Inventory
+#The player's inventory, for items they collect throughout the game
+inventory = {}
 
 
 
@@ -35,6 +39,11 @@ inspectDiscovered = False
 #Take command
 takeDiscovered = False
 takeHint = False
+
+
+##Take booleans
+#These are booleans used in the take command
+stunGun = False
 
 
 
@@ -88,6 +97,9 @@ def status():
 def discover():
     global action
     global name
+    global inspectDiscovered
+    global takeDiscovered
+    global takeHint
 
 
     print (">>> DISCOVERY APPLICATION ACTIVATED.")
@@ -118,9 +130,9 @@ def discover():
 
 
         #For discovering the inspect command
-        elif guess == "inspect":
+        elif guess == "inspect" and inspectDiscovered == False:
             
-            inspectDiscovered == True
+            inspectDiscovered = True
             
             #Adds command to "commands" dictionary
             commands["inspect"] = "inspect a place or item"
@@ -131,9 +143,9 @@ def discover():
 
 
         #For discovering the take command
-        elif guess == "take":
+        elif guess == "take" and takeDiscovered == False:
 
-            takeDiscovered == True
+            takeDiscovered = True
 
             #Adds command to "commands" dictionary
             commands["take"] = "take an item"
@@ -160,37 +172,86 @@ def discover():
 #Allows the player to inspect specific parts of the area
 def inspect():
     global action
+    global stunGun
+
+    
+    print (">>> INSPECT APPLICATION INITIALISED")
+    print (">>> TYPE CANCEL TO EXIT THE APPLICATION")
+        
     while action == "inspect":
+
         
         inspection = input("What do you want to inspect?").lower()
 
         if inspection == "door":
             print ("Taking a closer look at the metal door, you see it has no handle. Its smooth to the touch, and a thick layer of dust covers it suggesting it hasen't been used in a long while.")
 
-            action = "idle"
+           
 
         elif inspection == "bench":
             print ("You look over the bench, shifting through the dust and various junk on it. Among the junk you find a few things of interest.")
 
-            print ("Theres a large spanner, covered in rust and near breaking, but could be used atleast once more.")
-
-            print ("Theres a rectangular object with two prongs sticking out one of the shorter sides and the image of a lightning bolt painted on it. Theres a button on the one of the long side, that causes sparks of electricity to jump out from the prongs.")
+            if stunGun == False:
+                print ("You find a stun gun. Its a rectangular object with two prongs sticking out one of the shorter sides and the image of a lightning bolt painted on it. Theres a button on the one of the long side, that causes sparks of electricity to jump out from the prongs.")
 
             print ("There a large number of steel ball bearings in a massive bag next to the bench.")
 
             print ("You also find a button on the bottom side of the desk.")
 
-            action = "idle"
+            
 
         elif inspection == "self":
             print ("Looking yourself over, you seem to be wearing a survival suit of some kind. Your wearing an entirely yellow suit with no seems and black gloves attached to the forearms. The suit reaches up past your neck and covers your entire head, apart from your face.")
 
+            
+
+
+
+        elif inspection == "cancel":
             action = "idle"
+            
 
         else:
             print ("This is not a valid subject for inspection")
+
+
+
+
+##Take
+#Allows the player to take/pick up an object
+def take():
+    global action
+    global stunGun
+    
     
 
+    print (">>> TAKE APPLICATION INITIALISED")
+    print (">>> TYPE CANCEL TO EXIT THE APPLICATION")
+    
+    while action == "take":
+
+        obtain = input ("What would you like to take?").lower()
+
+        if obtain == "stun gun" and stunGun == False:
+
+            print ("You take the stun gun")
+
+            stunGun = True
+
+            inventory["Stun Gun"] = 1
+
+
+
+        elif obtain == "cancel":
+            action = "idle"
+
+        else:
+
+            print ("This isn't something you can take")
+            
+
+
+        
 
 
 
@@ -252,6 +313,10 @@ while main:
 
     elif action == "inspect" and inspectDiscovered == True:
         inspect()
+
+
+    elif action == "take" and takeDiscovered == True:
+        take()
 
     
         
