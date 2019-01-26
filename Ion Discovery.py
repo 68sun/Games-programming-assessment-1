@@ -15,7 +15,7 @@ energy = 100
 
 ##Commands
 #A list of commands that the player can use
-commands = {"help" : "Gives a list of discovered commands the player can use", "desription" : "gives a description of the room", "inventory" : "Shows the players inventory", "status" : "Checks the players health and energy level", "discover" : "Allows the player to discover new commands"}
+commands = {"help" : "Gives a list of discovered commands the player can use", "desription" : "gives a description of the room", "inventory" : "Shows the players inventory", "discover" : "Allows the player to discover new commands"}
 
 
 ##Inventory
@@ -99,15 +99,6 @@ def inventoryCheck():
     global action
     action = "idle"
     
-
-
-##Staus
-#Allows players to check their status/shows status when it changes
-def status():
-    print("<<<<<<<  Status  >>>>>>>>")
-    print("<<<   HEALTH: %d/%d   >>>" % (health, maxHealth))
-    print("<<<   ENERGY: %d/%d   >>>" % (energy, maxEnergy))
-    print("\n")
 
 
 ##Discover
@@ -508,7 +499,7 @@ print(">>> UPLOADING MISSION BRIEF. 20%. 40%. 30%^&$*$£^$ ((_ ((£*&&* ERROR. U
 print(">>> SYSTEM SHUTDOWN UNSUCCESSFUL. ADVISE MANAGEMENT INTERVENTION.")
 print(">>> \n" * 10)
 print("You awaken...")
-status()
+
 
 
 ##main gameplay loop
@@ -535,8 +526,7 @@ while main:
     elif action == "help":
         helpCommands()
 
-    elif action == "status":
-        status()
+
         action = "idle"
         
     #This is what every action will default back to
