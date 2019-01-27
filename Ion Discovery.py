@@ -25,7 +25,7 @@ inventory = {}
 
 
 ##Loop booleans
-#These are the varaibles that decide which loop to run at the moment
+#These are the varaibles that are used for loops
 main = True
 
 
@@ -35,6 +35,7 @@ initialLine = True
 panel = False
 gearJam = False
 doorLock = True
+endGame = False
 
 
 ##Discovery booleans
@@ -253,12 +254,14 @@ def inspect():
 
             print ("There a large number of steel ball bearings in a massive bag next to the bench.")
 
-            print ("You also find a button on the bottom side of the desk.")
+            if panel == False:
+                print ("You also find a button on the bottom side of the desk.")
 
-            #Unlocks take command hint
-            print ("Seeing the items, you feel a thought pushing through from the back of your mind as your hand hovers over the bench. You try to make sense of it, but something feels missing")
-            print (">>> DISCOVERY ALERT. NEW APPLICATION HINT DISCOVERED. OPEN DISCOVERY TO VIEW AND ATTEMPT DOWNLOAD OF NEW APPLICATION")
-            takeHint = True
+            if takeHint == False:
+                #Unlocks take command hint
+                print ("Seeing the items, you feel a thought pushing through from the back of your mind as your hand hovers over the bench. You try to make sense of it, but something feels missing")
+                print (">>> DISCOVERY ALERT. NEW APPLICATION HINT DISCOVERED. OPEN DISCOVERY TO VIEW AND ATTEMPT DOWNLOAD OF NEW APPLICATION")
+                takeHint = True
             
 
             
@@ -281,9 +284,10 @@ def inspect():
             print ("Theres a small red button on the underside of the workbench. You get a sudden urge to... do something to it, but don't know how.")
             
 
-            #Unlocks push command hint
-            print (">>> DISCOVERY ALERT. NEW APPLICATION HINT DISCOVERED. OPEN DISCOVERY TO VIEW AND ATTEMPT DOWNLOAD OF NEW APPLICATION")
-            pushHint = True
+            if pushHint == False:
+                #Unlocks push command hint
+                print (">>> DISCOVERY ALERT. NEW APPLICATION HINT DISCOVERED. OPEN DISCOVERY TO VIEW AND ATTEMPT DOWNLOAD OF NEW APPLICATION")
+                pushHint = True
 
 
         #The player inspects the newly opened panel
@@ -299,10 +303,11 @@ def inspect():
 
             print ("Inside the smaller panel, you see a glowing blue tube with the words 'ELECTRICAL RELEASE' labeled under it")
             
-            #Unlocks combine command
-            print ("Looking over the panel, your hand is drawn to the pouches in your suit. You feel like you need to use something on the panel, but you don't know how or what.")
-            print (">>> DISCOVERY ALERT. NEW APPLICATION HINT DISCOVERED. OPEN DISCOVERY TO VIEW AND ATTEMPT DOWNLOAD OF NEW APPLICATION")
-            combineHint = True
+            if combineHint == False:
+                #Unlocks combine command
+                print ("Looking over the panel, your hand is drawn to the pouches in your suit. You feel like you need to use something on the panel, but you don't know how or what.")
+                print (">>> DISCOVERY ALERT. NEW APPLICATION HINT DISCOVERED. OPEN DISCOVERY TO VIEW AND ATTEMPT DOWNLOAD OF NEW APPLICATION")
+                combineHint = True
         
 
         #Lets the player exit the command
@@ -530,7 +535,7 @@ while main:
         action = "idle"
         
     #This is what every action will default back to
-    elif action == "idle":
+    elif action == "idle" and endGame == False:
         action = input("What will you do?").lower()
 
 
@@ -579,7 +584,14 @@ while main:
         print ("You step through the door and embark out to explore the world, as an android freed from their programming.")
         print ("THE END")
 
-        break
+        endGame = True
+        action = "idle"
+
+    #Stops program without exiting program
+    elif action == "idle" and endGame == True:
+        pass
+
+
         
         
 
